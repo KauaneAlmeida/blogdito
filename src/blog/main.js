@@ -178,6 +178,60 @@ function renderSidebar(items) {
   `).join('');
 }
 
+// ===== Collapse long lists on mobile =====
+// Mobile only: inside the main post grid, dynamic section grids (Guias, etc.)
+// and the sidebar (Mais Lidas), keep the first N items visible and hide the
+// rest behind a compact "Ver mais ↓" toggle.
+const MOBILE_VISIBLE = 4;
+const SIDEBAR_VISIBLE = 4;
+function initMobileCollapse() {
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
+  if (!isMobile) return;
+
+  const targets = [
+    ...Array.from(document.querySelectorAll('#post-grid-slot')).map(el => ({
+      list: el,
+      itemSelector: ':scope > .post-card',
+      visible: MOBILE_VISIBLE,
+    })),
+    ...Array.from(document.querySelectorAll('#sidebar-slot')).map(el => ({
+      list: el,
+      itemSelector: ':scope > li',
+      visible: SIDEBAR_VISIBLE,
+    })),
+  ];
+
+  targets.forEach(({ list, itemSelector, visible }) => {
+    if (!list) return;
+    const items = list.querySelectorAll(itemSelector);
+    if (items.length <= visible) return;
+
+    // Hide items beyond the visible limit
+    items.forEach((item, i) => {
+      if (i >= visible) item.classList.add('mobile-hidden');
+    });
+
+    // Build toggle
+    const toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'mobile-expand-toggle';
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.innerHTML = '<span class="toggle-label">Ver mais</span><span class="toggle-arrow">↓</span>';
+
+    toggle.addEventListener('click', () => {
+      const expanded = list.classList.toggle('expanded');
+      items.forEach((item, i) => {
+        if (i >= visible) item.classList.toggle('mobile-hidden', !expanded);
+      });
+      toggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+      toggle.querySelector('.toggle-label').textContent = expanded ? 'Ver menos' : 'Ver mais';
+      toggle.querySelector('.toggle-arrow').textContent = expanded ? '↑' : '↓';
+    });
+
+    list.insertAdjacentElement('afterend', toggle);
+  });
+}
+
 function renderMarquee(line1, line2) {
   const l1 = esc(line1 || '');
   const l2 = esc(line2 || '');
@@ -495,12 +549,16 @@ async function loadBlog() {
     const marqueeSlot = document.getElementById('marquee-slot');
     if (marqueeSlot) marqueeSlot.innerHTML = renderMarquee(config.marquee_line_1, config.marquee_line_2);
 
-    // Dynamic sections
+    // Dynamic sections (isolated — a failure here should not break the rest)
     const sectionsSlot = document.getElementById('sections-slot');
     if (sectionsSlot) {
-      const sectionHtml = await Promise.all((sections || []).map(renderDynamicSection));
-      sectionsSlot.innerHTML = sectionHtml.join('');
-      initCarousels();
+      try {
+        const sectionHtml = await Promise.all((sections || []).map(renderDynamicSection));
+        sectionsSlot.innerHTML = sectionHtml.join('');
+        initCarousels();
+      } catch (sectionErr) {
+        console.error('Erro carregando seções dinâmicas:', sectionErr);
+      }
     }
 
     // Footer
@@ -509,11 +567,18 @@ async function loadBlog() {
 
   } catch (err) {
     console.error('Erro carregando blog:', err);
-    document.getElementById('post-grid-slot').innerHTML = `
-      <p style="color:var(--text-muted); grid-column: 1 / -1; text-align: center; padding: 40px;">
-        Erro ao carregar conteúdo. Tente recarregar a página.
-      </p>
-    `;
+    const gridSlot = document.getElementById('post-grid-slot');
+    if (gridSlot) {
+      gridSlot.innerHTML = `
+        <p style="color:var(--text-muted); grid-column: 1 / -1; text-align: center; padding: 40px;">
+          Erro ao carregar conteúdo. Tente recarregar a página.
+        </p>
+      `;
+    }
+  } finally {
+    // Always run collapse init — even if sections failed, the post grid and
+    // sidebar may still be populated and need their mobile toggles.
+    initMobileCollapse();
   }
 }
 

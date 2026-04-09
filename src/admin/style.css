@@ -19,6 +19,7 @@ html, body {
   font-family: 'Nunito', sans-serif;
   background: var(--bg);
   color: var(--text);
+  overflow-x: hidden;
 }
 a { color: inherit; text-decoration: none; }
 
@@ -1255,13 +1256,172 @@ a { color: inherit; text-decoration: none; }
   .modal-split { grid-template-columns: 1fr; gap: 20px; }
   .modal-preview-col { position: static; }
 }
+
+/* Tablets and phones */
 @media (max-width: 768px) {
-  .admin-container { padding: 20px; }
-  .post-item { grid-template-columns: 80px 1fr; }
-  .post-item img { width: 80px; height: 60px; }
-  .post-item-actions { grid-column: 1 / -1; }
-  .admin-header { padding: 12px 16px; flex-wrap: wrap; gap: 10px; }
+  /* Login */
+  .login-wrap { padding: 20px 16px; }
+  .login-card { padding: 28px 22px; }
+  .login-card h1 { font-size: 20px; }
+
+  /* Admin header */
+  .admin-header {
+    padding: 12px 16px;
+    gap: 10px;
+  }
   .admin-header h2 { display: none; }
+  .admin-header-left { gap: 10px; }
+  .admin-header .logo { padding: 5px 10px; }
+  .admin-header .logo .brand { font-size: 12px; }
+  .admin-header .logo .sub { font-size: 7px; }
+  .admin-header-right { gap: 8px; }
+  .admin-header-right .user-email { display: none; }
+
+  /* Container */
+  .admin-container {
+    padding: 20px 16px;
+  }
+
+  /* Tabs: horizontal scroll instead of wrap */
+  .admin-tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 20px;
+  }
+  .admin-tabs::-webkit-scrollbar { display: none; }
+  .admin-tab {
+    padding: 10px 16px;
+    font-size: 12px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* Panel header */
+  .panel-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  .panel-header h3 { font-size: 18px; }
+  .panel-description { font-size: 12px; }
+  .panel-header .btn { width: 100%; justify-content: center; }
+
+  /* Post item cards */
+  .post-item {
+    grid-template-columns: 80px 1fr;
+    gap: 12px;
+    padding: 12px;
+  }
+  .post-item img {
+    width: 80px;
+    height: 60px;
+  }
+  .post-item-info h4 { font-size: 14px; }
+  .post-item-info p { font-size: 11px; }
+  .post-item-actions {
+    grid-column: 1 / -1;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .post-item-actions .btn {
+    padding: 8px 12px;
+    font-size: 11px;
+  }
+
+  /* Section blocks in admin */
+  .section-block-admin {
+    padding: 16px;
+  }
+  .section-block-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .section-block-meta {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .section-items-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .section-item-card {
+    padding: 10px;
+  }
+  .section-item-card-actions {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  /* Modal */
+  .modal-overlay { padding: 12px; }
+  .modal {
+    max-height: 92vh;
+  }
+  .modal-header { padding: 16px 18px; }
+  .modal-header h3 { font-size: 16px; }
+  .modal-body { padding: 18px; }
+  .modal-footer {
+    padding: 14px 18px;
+    flex-direction: column-reverse;
+    gap: 8px;
+  }
+  .modal-footer .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Forms: prevent iOS auto-zoom on focus */
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    font-size: 16px;
+    padding: 10px 12px;
+  }
+  .form-group label { font-size: 11px; }
+  .form-group label.checkbox-label { font-size: 13px; }
+  .form-group small { font-size: 11px; }
+
+  /* Buttons */
+  .btn { padding: 10px 16px; font-size: 12px; }
+  .btn-sm { padding: 7px 12px; font-size: 11px; }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+  .admin-container { padding: 16px 12px; }
+
+  .admin-header {
+    padding: 10px 12px;
+  }
+  .admin-header-right .btn {
+    padding: 7px 10px;
+    font-size: 10px;
+  }
+
+  .admin-tab { padding: 9px 14px; font-size: 11px; }
+
+  .post-item {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .post-item img {
+    width: 100%;
+    height: 140px;
+    margin: 0 auto;
+  }
+
+  .section-items-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-body { padding: 14px; }
+  .modal-header { padding: 14px; }
+  .modal-footer { padding: 12px 14px; }
+  .login-card { padding: 22px 18px; }
 }
 
 /* ===== VIRTUAL TOUR ===== */
@@ -1388,5 +1548,27 @@ a { color: inherit; text-decoration: none; }
 }
 .tour-next:hover { opacity: 0.9; }
 @media (max-width: 600px) {
-  .tour-tooltip { width: calc(100vw - 32px); }
+  .tour-tooltip {
+    width: calc(100vw - 24px);
+    padding: 18px 18px 14px;
+  }
+  .tour-title { font-size: 15px; }
+  .tour-body { font-size: 12px; margin-bottom: 14px; }
+  .tour-actions {
+    flex-direction: column-reverse;
+    gap: 12px;
+    align-items: stretch;
+  }
+  .tour-nav {
+    justify-content: space-between;
+  }
+  .tour-prev,
+  .tour-next {
+    flex: 1;
+    padding: 10px 14px;
+  }
+  .tour-skip {
+    text-align: center;
+    padding: 8px 4px;
+  }
 }

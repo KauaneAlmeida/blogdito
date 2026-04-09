@@ -46,6 +46,7 @@ body {
   line-height: 1.5;
   transition: background 0.3s, color 0.3s;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 /* Offset scroll targets by header height so the sticky header doesn't cover them */
 #post-grid-slot,
@@ -1061,6 +1062,9 @@ footer hr {
   animation-play-state: paused;
 }
 
+/* Mobile collapse toggle — hidden by default, only shown inside mobile breakpoint */
+.mobile-expand-toggle { display: none; }
+
 /* SECTIONS (Guias / Mais Lidas) */
 .section-block {
   padding: 32px 0 48px;
@@ -1090,6 +1094,12 @@ footer hr {
 }
 .section-grid.grid-2 {
   grid-template-columns: repeat(2, 1fr);
+}
+/* Desktop home page: show only first 3 cards in default section-grid (grid-3).
+   Scoped to #sections-slot so the /section.html page still shows everything.
+   Mobile override below re-displays them. */
+#sections-slot .section-grid:not(.grid-2) > .section-card:nth-child(n+4) {
+  display: none;
 }
 .section-card {
   cursor: pointer;
@@ -1300,14 +1310,88 @@ footer hr {
 .skeleton-img { width: 100%; height: 180px; }
 
 /* RESPONSIVE */
+/* Tablet / smaller desktops */
+@media (max-width: 1024px) {
+  .main-grid {
+    grid-template-columns: 1fr;
+  }
+  .post-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  .section-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+  .featured { max-height: 400px; }
+  .featured-text h1 { font-size: 24px; }
+  .carousel-card { flex: 0 0 calc((100% - 48px) / 2.5); }
+}
+
+/* Large phones / small tablets */
+@media (max-width: 900px) {
+  .post-detail-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .post-detail { max-width: 820px; margin: 0 auto; }
+  .post-detail-sidebar { position: static; max-width: 820px; margin: 0 auto; width: 100%; }
+  .container { padding: 0 18px; }
+  .banner-slide-bg-overlay {
+    padding: 40px 36px;
+    max-width: 75%;
+  }
+  .banner-slide-bg-overlay h2 { font-size: 24px; }
+}
+
+/* Phones */
 @media (max-width: 768px) {
-  .header-inner { flex-direction: column; gap: 14px; }
-  nav ul { flex-wrap: wrap; justify-content: center; gap: 12px; }
+  .container { padding: 0 16px; }
+
+  /* Header: keep logo on left, compact nav on right */
+  .header-inner {
+    padding: 12px 16px;
+    gap: 10px;
+  }
+  .logo {
+    padding: 6px 10px;
+  }
+  .logo .brand { font-size: 15px; }
+  .logo .sub { font-size: 8px; }
+  .logo .logo-img { max-height: 36px; }
+
+  /* Compact nav: keep inline, smaller text */
+  nav ul {
+    gap: 14px;
+    flex-wrap: nowrap;
+  }
+  nav a {
+    font-size: 11px;
+    letter-spacing: 0.4px;
+  }
+  .icon-btn {
+    width: 30px;
+    height: 30px;
+  }
+  .icon-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* Search dropdown spans full width */
+  .search-overlay {
+    right: 12px;
+    left: 12px;
+    width: auto;
+  }
+
+  /* Banner */
   .banner,
   .banner-slide {
     grid-template-columns: 1fr;
     text-align: center;
   }
+  .banner-carousel { margin: 16px 0; }
   .banner-nav { display: none; }
   .banner-prev { left: 0; }
   .banner-next { right: 0; }
@@ -1317,44 +1401,401 @@ footer hr {
     max-width: 100%;
     text-align: left;
   }
-  .banner-slide-bg-overlay h2 { font-size: 22px; }
+  .banner-slide-bg-overlay h2 { font-size: 20px; }
   .banner-slide-bg-overlay p { font-size: 14px; }
+  .banner-slide-bg-overlay .banner-btn a {
+    padding: 12px 22px;
+    font-size: 12px;
+  }
+
+  /* Main layout */
   .main-grid {
     grid-template-columns: 1fr;
+    gap: 28px;
+    margin-bottom: 32px;
   }
   .post-grid {
     grid-template-columns: 1fr;
+    gap: 16px;
   }
-  .section-grid, .section-grid.grid-2 {
+
+  /* Featured */
+  .featured {
+    aspect-ratio: 4 / 3;
+    max-height: 400px;
+    margin-bottom: 24px;
+    margin-left: -6px;
+    margin-right: -6px;
+  }
+  .featured-text { padding: 18px; }
+  .featured-text h1 { font-size: 18px; }
+  .featured-text p { font-size: 12px; }
+
+  /* Sections */
+  .section-block { padding: 24px 0 8px; }
+  .section-grid,
+  .section-grid.grid-2 {
     grid-template-columns: 1fr;
+    gap: 20px;
   }
-  .section-header h2 { font-size: 24px; }
-  .duo-grid { grid-template-columns: 1fr; gap: 32px; }
-  .duo-col-header h2 { font-size: 22px; }
-  .duo-subtitle { font-size: 18px; }
-  .carousel-card { flex: 0 0 80%; }
+  .section-header {
+    margin-bottom: 18px;
+  }
+  .section-header h2 { font-size: 22px; }
+  .section-header .view-more { font-size: 12px; }
+  .section-card h3 { font-size: 17px; }
+
+  /* Duo */
+  .duo-grid { grid-template-columns: 1fr; gap: 28px; }
+  .duo-col-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+  .duo-col-header h2 { font-size: 20px; }
+  .duo-subtitle { font-size: 16px; }
+
+  /* Carousel */
+  .carousel-card {
+    flex: 0 0 85%;
+    min-width: 0 !important;
+  }
   .carousel-nav { display: none; }
-  .carousel-buttons { grid-template-columns: 1fr; }
+  .carousel-buttons {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .pill-btn { font-size: 12px; padding: 10px 16px; }
+
+  /* Marquee */
+  .marquee-section {
+    padding: 28px 0;
+    gap: 10px;
+  }
+  .marquee-content {
+    font-size: clamp(22px, 8vw, 36px);
+  }
+
+  /* Sidebar list */
+  .sidebar-list li { padding: 16px 0; }
+  .sidebar-list h3 { font-size: 15px; }
+
+  /* Post card — horizontal layout on mobile (thumb left, content right) */
+  .post-card-link {
+    display: grid;
+    grid-template-columns: 110px minmax(0, 1fr);
+    grid-template-areas:
+      "bar bar"
+      "img content";
+    column-gap: 12px;
+    row-gap: 0;
+    padding: 12px 14px;
+    align-items: center;
+  }
+  .post-card-link > * {
+    min-width: 0;
+  }
+  .post-card .card-bar {
+    grid-area: bar;
+    margin: 0 0 10px 0;
+    width: 100%;
+  }
+  .post-card .img-wrap {
+    grid-area: img;
+    aspect-ratio: 1 / 1;
+    max-height: 110px;
+    margin: 0;
+  }
+  .post-card .post-content {
+    grid-area: content;
+    padding: 0;
+    align-self: center;
+  }
+  .post-card .post-content h3 {
+    font-size: 14px;
+    -webkit-line-clamp: 2;
+    margin-bottom: 4px;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+  }
+  .post-card .post-content p {
+    font-size: 11px;
+    -webkit-line-clamp: 2;
+    margin-bottom: 6px;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+  }
+  .post-card .post-content .cat {
+    font-size: 9px;
+    margin-bottom: 4px;
+    letter-spacing: 0.6px;
+    word-break: break-word;
+  }
+  .post-card .read-more {
+    display: none;
+  }
+
+  /* Section grid (default / grid-3) → 2 columns on mobile with compact vertical cards */
+  .section-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 14px !important;
+  }
+  /* Mobile home: show first 4 cards (undoing the desktop 3-card limit).
+     Scoped to #sections-slot so /section.html still shows everything. */
+  #sections-slot .section-grid:not(.grid-2) > .section-card:nth-child(-n+4) {
+    display: flex;
+  }
+  #sections-slot .section-grid:not(.grid-2) > .section-card:nth-child(n+5) {
+    display: none;
+  }
+  .section-card {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+  .section-card > * {
+    min-width: 0;
+  }
+  .section-card .img-wrap {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    max-height: none;
+    margin: 0;
+  }
+  .section-card .cat {
+    display: block;
+    font-size: 9px;
+    margin: 10px 10px 4px;
+    letter-spacing: 0.6px;
+    word-break: break-word;
+  }
+  .section-card h3 {
+    font-size: 13px;
+    line-height: 1.3;
+    margin: 0 10px 6px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+  }
+  .section-card p {
+    font-size: 11px;
+    margin: 0 10px 10px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+  }
+
+  /* grid-2 stays as 1 column big horizontal cards on mobile */
+  .section-grid.grid-2 {
+    grid-template-columns: 1fr !important;
+  }
+  .section-grid.grid-2 .section-card {
+    display: grid;
+    grid-template-columns: 110px minmax(0, 1fr);
+    grid-template-areas:
+      "img cat"
+      "img title"
+      "img excerpt";
+    grid-template-rows: auto auto 1fr;
+    column-gap: 12px;
+    row-gap: 2px;
+    padding: 12px 14px;
+    border-radius: 0;
+    align-items: start;
+  }
+  .section-grid.grid-2 .section-card .img-wrap {
+    grid-area: img;
+    aspect-ratio: 1 / 1;
+    max-height: 110px;
+    margin: 0;
+    align-self: center;
+  }
+  .section-grid.grid-2 .section-card .cat {
+    grid-area: cat;
+    margin: 0 0 2px;
+  }
+  .section-grid.grid-2 .section-card h3 {
+    grid-area: title;
+    font-size: 14px;
+    margin: 0;
+  }
+  .section-grid.grid-2 .section-card p {
+    grid-area: excerpt;
+    margin: 4px 0 0;
+  }
+
+  /* Mobile collapse toggle for long lists */
+  .mobile-hidden { display: none !important; }
+  /* When sidebar is collapsed, hide the hr of the last visible item (4th) */
+  .sidebar-list:not(.expanded) li:nth-child(4) hr { display: none; }
+  .mobile-expand-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    margin: 12px 0 28px;
+    padding: 8px 14px;
+    background: transparent;
+    border: none;
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+  .mobile-expand-toggle:hover,
+  .mobile-expand-toggle:focus-visible {
+    color: var(--text-strong);
+    outline: none;
+  }
+  .mobile-expand-toggle .toggle-arrow {
+    font-size: 14px;
+    line-height: 1;
+    display: inline-block;
+    animation: toggle-arrow-bounce 1.4s ease-in-out infinite;
+  }
+  .mobile-expand-toggle[aria-expanded="true"] .toggle-arrow {
+    animation-name: toggle-arrow-bounce-up;
+  }
+  @keyframes toggle-arrow-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(4px); }
+  }
+  @keyframes toggle-arrow-bounce-up {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+  }
+
+  /* Footer */
   .footer-grid {
     grid-template-columns: 1fr;
     text-align: center;
+    gap: 28px;
+    padding-bottom: 24px;
   }
+  footer { padding: 32px 0 16px; }
+  .footer-col h4 { font-size: 13px; }
   .social { justify-content: center; }
-  .featured-text h1 { font-size: 20px; }
-  .banner-text h2 { font-size: 18px; }
+
+  /* Post detail page */
   .post-detail-wrap { padding: 24px 16px 40px; }
-  .post-detail-header { padding: 20px 18px 16px; }
-  .post-detail-header h1 { font-size: 28px; }
-  .post-detail-excerpt { font-size: 16px; }
-  .post-detail-body { font-size: 16px; }
-}
-@media (max-width: 900px) {
-  .post-detail-grid {
-    grid-template-columns: 1fr;
-    gap: 40px;
+  .post-detail-header { padding: 20px 18px 16px; margin-bottom: 24px; }
+  .post-detail-header h1 { font-size: 26px; }
+  .post-detail-header .category-badge { margin-bottom: 10px; }
+  .post-detail-excerpt { font-size: 15px; margin-bottom: 14px; }
+  .post-detail-meta { font-size: 12px; padding-top: 14px; }
+  .post-detail-hero { margin-bottom: 24px; }
+  .post-detail-body { font-size: 15px; line-height: 1.7; }
+  .post-detail-body p { margin-bottom: 18px; }
+  .back-link { margin-bottom: 20px; font-size: 12px; }
+
+  /* Post sidebar (Leia também) */
+  .post-sidebar-block { padding: 20px 18px 10px; }
+  .post-sidebar-list a {
+    grid-template-columns: 96px 1fr;
+    gap: 12px;
   }
-  .post-detail { max-width: 820px; margin: 0 auto; }
-  .post-detail-sidebar { position: static; max-width: 820px; margin: 0 auto; width: 100%; }
+  .post-sidebar-thumb { width: 96px; height: 72px; }
+  .post-sidebar-info h5 { font-size: 14px; }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+  .container { padding: 0 14px; }
+  .header-inner { padding: 10px 14px; gap: 8px; }
+  .logo { padding: 5px 9px; }
+  .logo .brand { font-size: 13px; }
+
+  /* Hide "Sobre" and "Contato" text links, keep Home, Categorias and icons */
+  nav ul { gap: 10px; }
+  nav ul li:nth-child(3),
+  nav ul li:nth-child(4) {
+    display: none;
+  }
+  nav a { font-size: 10px; }
+
+  .banner-slide-bg { min-height: 200px; }
+  .banner-slide-bg-overlay {
+    padding: 20px 16px;
+  }
+  .banner-slide-bg-overlay h2 { font-size: 16px; }
+  .banner-slide-bg-overlay p { font-size: 12px; }
+  .banner-slide-bg-overlay .banner-btn a {
+    padding: 10px 18px;
+    font-size: 11px;
+  }
+
+  .featured {
+    aspect-ratio: 4 / 3;
+    max-height: 240px;
+  }
+  .featured-text { padding: 14px; }
+  .featured-text h1 { font-size: 15px; }
+  .featured-text p { font-size: 11px; }
+
+  /* Post card even more compact on small phones */
+  .post-card-link {
+    grid-template-columns: 92px 1fr;
+    padding: 10px 12px;
+    column-gap: 10px;
+  }
+  .post-card .img-wrap { max-height: 92px; }
+  .post-card .post-content h3 { font-size: 13px; }
+  .post-card .post-content p {
+    font-size: 10px;
+    -webkit-line-clamp: 2;
+  }
+
+  /* Section cards on small phones — grid-2 (horizontal) gets tighter layout */
+  .section-grid.grid-2 .section-card {
+    grid-template-columns: 92px 1fr;
+    padding: 10px 12px;
+    column-gap: 10px;
+  }
+  .section-grid.grid-2 .section-card .img-wrap { max-height: 92px; }
+  .section-grid.grid-2 .section-card h3 { font-size: 13px; }
+  .section-grid.grid-2 .section-card p {
+    font-size: 10px;
+    -webkit-line-clamp: 2;
+  }
+  /* Default 2-col vertical cards get slightly smaller text on small phones */
+  .section-grid:not(.grid-2) .section-card h3 { font-size: 12px; }
+  .section-grid:not(.grid-2) .section-card p { font-size: 10px; }
+
+  .section-header h2 { font-size: 20px; }
+  .duo-col-header h2 { font-size: 18px; }
+
+  .post-detail-header h1 { font-size: 22px; }
+  .post-detail-excerpt { font-size: 14px; }
+  .post-detail-body { font-size: 14px; }
+  .post-detail-hero { aspect-ratio: 4 / 3; }
+
+  .marquee-content {
+    font-size: clamp(18px, 7vw, 28px);
+  }
+
+  .footer-col h4 { font-size: 12px; }
+  .footer-col p, .footer-col li { font-size: 12px; }
 }
 
 /* ===== SECTION DETAIL PAGE ===== */
@@ -1389,7 +1830,11 @@ footer hr {
   line-height: 1.5;
   margin-top: 10px;
 }
-@media (max-width: 720px) {
+@media (max-width: 768px) {
   .section-detail-wrap { padding: 24px 16px 40px; }
-  .section-detail-header h1 { font-size: 28px; }
+  .section-detail-header { margin-bottom: 20px; }
+  .section-detail-header h1 { font-size: 26px; }
+}
+@media (max-width: 480px) {
+  .section-detail-header h1 { font-size: 22px; }
 }
