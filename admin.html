@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin - Partiu Intercâmbio</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-wrap" id="loginWrap">
+  <form class="login-card" id="loginForm">
+    <div class="logo" id="loginLogo"></div>
+    <h1>Painel Admin</h1>
+    <p class="hint">Entre com seu email e senha para editar o site.</p>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" required autocomplete="email">
+    </div>
+    <div class="form-group">
+      <label for="password">Senha</label>
+      <input type="password" id="password" required autocomplete="current-password">
+    </div>
+    <button type="submit" class="btn btn-block" id="loginBtn">Entrar</button>
+  </form>
+</div>
+
+<!-- ADMIN DASHBOARD -->
+<div class="admin-wrap" id="adminWrap">
+  <header class="admin-header">
+    <div class="admin-header-left">
+      <div class="logo" id="adminLogo"></div>
+      <h2>Painel de Edição</h2>
+    </div>
+    <div class="admin-header-right">
+      <span class="user-email" id="userEmail"></span>
+      <a href="/" class="btn btn-secondary btn-sm" target="_blank">Ver site ↗</a>
+      <button class="btn btn-secondary btn-sm" id="logoutBtn">Sair</button>
+    </div>
+  </header>
+
+  <div class="admin-container">
+    <div class="admin-tabs">
+      <button class="admin-tab active" data-tab="posts">Posts</button>
+      <button class="admin-tab" data-tab="banners">Banners</button>
+      <button class="admin-tab" data-tab="sidebar">Sidebar</button>
+      <button class="admin-tab" data-tab="sections">Seções</button>
+      <button class="admin-tab" data-tab="config">Configurações</button>
+    </div>
+
+    <!-- POSTS TAB -->
+    <div class="tab-panel active" data-panel="posts">
+      <div class="panel-header">
+        <div>
+          <h3>Posts do Blog</h3>
+          <p class="panel-description">Post em destaque (featured) aparece no topo. Demais preenchem o grid.</p>
+        </div>
+        <button class="btn" id="newPostBtn">+ Novo Post</button>
+      </div>
+      <div class="post-list" id="postList">
+        <div class="loading-state">Carregando...</div>
+      </div>
+    </div>
+
+    <!-- BANNERS TAB -->
+    <div class="tab-panel" data-panel="banners">
+      <div class="panel-header">
+        <div>
+          <h3>Banners (carrossel do topo)</h3>
+          <p class="panel-description">Banners que aparecem em rotação no topo da home. Arraste a ordem com o campo "posição".</p>
+        </div>
+        <button class="btn" id="newBannerBtn">+ Novo Banner</button>
+      </div>
+      <div class="post-list" id="bannerList">
+        <div class="loading-state">Carregando...</div>
+      </div>
+    </div>
+
+    <!-- SIDEBAR TAB -->
+    <div class="tab-panel" data-panel="sidebar">
+      <div class="panel-header">
+        <div>
+          <h3>Sidebar do Blog</h3>
+          <p class="panel-description">Lista de artigos que aparece ao lado direito do post em destaque.</p>
+        </div>
+        <button class="btn" id="newSidebarBtn">+ Novo Item</button>
+      </div>
+      <div class="post-list" id="sidebarList">
+        <div class="loading-state">Carregando...</div>
+      </div>
+    </div>
+
+    <!-- SECTIONS TAB -->
+    <div class="tab-panel" data-panel="sections">
+      <div class="panel-header">
+        <div>
+          <h3>Seções Dinâmicas</h3>
+          <p class="panel-description">Seções customizadas como "Guias" e "Mais Lidas" que aparecem abaixo do marquee.</p>
+        </div>
+        <button class="btn" id="newSectionBtn">+ Nova Seção</button>
+      </div>
+      <div id="sectionsList">
+        <div class="loading-state">Carregando...</div>
+      </div>
+    </div>
+
+    <!-- CONFIG TAB -->
+    <div class="tab-panel" data-panel="config">
+      <div class="panel-header">
+        <div>
+          <h3>Configurações Gerais</h3>
+          <p class="panel-description">Edite textos globais, banner, marquee e rodapé.</p>
+        </div>
+      </div>
+      <div id="configContent">
+        <div class="loading-state">Carregando...</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <h3 id="modalTitle">Editar</h3>
+      <button class="modal-close" id="modalClose">×</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-footer" id="modalFooter"></div>
+  </div>
+</div>
+
+<!-- TOASTS -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script type="module" src="/src/admin/main.js"></script>
+</body>
+</html>

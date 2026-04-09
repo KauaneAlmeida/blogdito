@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Partiu Intercâmbio - Blog</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <a href="/" class="logo" id="siteLogo"></a>
+    <nav>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="#sections-slot">Categorias</a></li>
+        <li><a href="#footer-slot">Sobre</a></li>
+        <li><a href="#footer-slot" class="contact">Contato</a></li>
+        <li>
+          <button type="button" class="icon-btn search-icon" id="searchOpenBtn" title="Buscar" aria-label="Abrir busca">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.3-4.3"></path>
+            </svg>
+          </button>
+        </li>
+        <li>
+          <span class="icon-btn theme-toggle" id="themeToggle" title="Alternar tema">
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="4"></circle>
+              <path d="M12 2v2"></path>
+              <path d="M12 20v2"></path>
+              <path d="m4.93 4.93 1.41 1.41"></path>
+              <path d="m17.66 17.66 1.41 1.41"></path>
+              <path d="M2 12h2"></path>
+              <path d="M20 12h2"></path>
+              <path d="m6.34 17.66-1.41 1.41"></path>
+              <path d="m19.07 4.93-1.41 1.41"></path>
+            </svg>
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+            </svg>
+          </span>
+        </li>
+      </ul>
+    </nav>
+    <!-- SEARCH OVERLAY (inline dropdown) -->
+    <div class="search-overlay" id="searchOverlay" aria-hidden="true">
+      <div class="search-panel">
+        <div class="search-input-wrap">
+          <svg class="search-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+          </svg>
+          <input type="text" id="searchInput" placeholder="Buscar posts, guias, categorias..." autocomplete="off">
+          <button type="button" class="search-close" id="searchCloseBtn" aria-label="Fechar">×</button>
+        </div>
+        <div class="search-results" id="searchResults"></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <!-- Banner (dynamic) -->
+  <div id="banner-slot"></div>
+
+  <!-- Main grid -->
+  <div class="main-grid">
+    <div>
+      <div id="featured-slot"></div>
+      <div class="post-grid" id="post-grid-slot"></div>
+    </div>
+    <aside>
+      <ul class="sidebar-list" id="sidebar-slot"></ul>
+    </aside>
+  </div>
+</div>
+
+<!-- Marquee (dynamic) -->
+<div id="marquee-slot"></div>
+
+<!-- Dynamic sections (Guias, Mais Lidas, etc.) -->
+<div id="sections-slot"></div>
+
+<!-- Footer (dynamic) -->
+<div id="footer-slot"></div>
+
+<script type="module" src="/src/blog/main.js"></script>
+</body>
+</html>
