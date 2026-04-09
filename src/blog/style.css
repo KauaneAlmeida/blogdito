@@ -1422,10 +1422,10 @@ footer hr {
   /* Featured */
   .featured {
     aspect-ratio: 4 / 3;
-    max-height: 400px;
+    max-height: 500px;
     margin-bottom: 24px;
-    margin-left: -6px;
-    margin-right: -6px;
+    margin-left: -12px;
+    margin-right: -12px;
   }
   .featured-text { padding: 18px; }
   .featured-text h1 { font-size: 18px; }
@@ -1686,16 +1686,20 @@ footer hr {
     50% { transform: translateY(-4px); }
   }
 
-  /* Footer */
+  /* Footer — 2-column layout on mobile so content fills the width */
   .footer-grid {
-    grid-template-columns: 1fr;
-    text-align: center;
-    gap: 28px;
+    grid-template-columns: 1fr 1fr;
+    text-align: left;
+    gap: 20px 16px;
     padding-bottom: 24px;
+  }
+  .footer-col:first-child {
+    grid-column: 1 / -1;
+    text-align: center;
   }
   footer { padding: 32px 0 16px; }
   .footer-col h4 { font-size: 13px; }
-  .social { justify-content: center; }
+  .social { justify-content: flex-start; }
 
   /* Post detail page */
   .post-detail-wrap { padding: 24px 16px 40px; }
@@ -1747,7 +1751,9 @@ footer hr {
 
   .featured {
     aspect-ratio: 4 / 3;
-    max-height: 240px;
+    max-height: 420px;
+    margin-left: -14px;
+    margin-right: -14px;
   }
   .featured-text { padding: 14px; }
   .featured-text h1 { font-size: 15px; }
